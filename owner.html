@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Owner Panel | Sangeeta & Sons Equipments</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#ff6b9d;--orange:#ff9f43;--yellow:#ffd32a;
+  --teal:#00d2d3;--purple:#a55eea;--green:#26de81;
+  --dark:#1e1e2e;--text:#2d2d44;--red:#e74c3c;--blue:#4a90e2;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;background:#f0f2f8;color:var(--text);}
+
+.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1e1e2e 0%,#2d1b69 50%,#1a1a2e 100%);position:relative;overflow:hidden;}
+.login-page::before{content:'🎂';font-size:300px;position:absolute;opacity:0.04;top:-60px;right:-60px;transform:rotate(20deg);}
+.login-card{background:white;border-radius:28px;padding:50px 40px;width:92%;max-width:420px;text-align:center;box-shadow:0 25px 80px rgba(0,0,0,0.4);position:relative;z-index:1;}
+.lc-icon{width:80px;height:80px;border-radius:24px;background:linear-gradient(135deg,var(--pink),var(--orange));display:flex;align-items:center;justify-content:center;font-size:38px;margin:0 auto 20px;box-shadow:0 8px 25px rgba(255,107,157,0.4);}
+.login-card h2{font-family:'Baloo 2',cursive;font-size:1.7rem;color:var(--dark);margin-bottom:4px;}
+.login-card .sub{color:#999;font-size:0.85rem;margin-bottom:28px;}
+.pwd-wrap{position:relative;margin-bottom:16px;}
+.pwd-wrap input{width:100%;padding:15px 50px 15px 20px;border:2px solid #eee;border-radius:14px;font-size:1rem;outline:none;text-align:center;letter-spacing:4px;font-family:'Poppins',sans-serif;transition:all 0.3s;}
+.pwd-wrap input:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,107,157,0.1);}
+.eye-btn{position:absolute;right:16px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1.1rem;}
+.login-btn{width:100%;background:linear-gradient(135deg,var(--pink),var(--orange));color:white;border:none;padding:15px;border-radius:14px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;letter-spacing:1px;transition:all 0.3s;}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,107,157,0.4);}
+.login-err{color:var(--red);font-size:0.85rem;margin-top:12px;display:none;}
+.pwd-hint{margin-top:18px;color:#bbb;font-size:0.75rem;}
+.pwd-hint strong{color:var(--orange);}
+
+.panel{display:none;}
+.panel.on{display:block;}
+
+header{background:linear-gradient(135deg,var(--dark),#2d2d44);position:sticky;top:0;z-index:200;box-shadow:0 4px 25px rgba(0,0,0,0.35);}
+.hd{max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;}
+.logo{display:flex;align-items:center;gap:12px;}
+.logo-ic{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--pink),var(--orange));display:flex;align-items:center;justify-content:center;font-size:22px;}
+.logo-tx h1{font-family:'Baloo 2',cursive;font-size:1.3rem;color:white;}
+.logo-tx p{font-size:0.68rem;color:var(--orange);letter-spacing:2px;text-transform:uppercase;font-weight:700;}
+.logout{background:var(--red);color:white;border:none;padding:9px 18px;border-radius:20px;cursor:pointer;font-weight:700;font-size:0.82rem;font-family:'Poppins',sans-serif;transition:all 0.3s;}
+.logout:hover{background:#c0392b;}
+
+.main{max-width:1300px;margin:0 auto;padding:28px 20px;}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:32px;}
+.scard{background:white;border-radius:18px;padding:22px 20px;text-align:center;box-shadow:0 3px 15px rgba(0,0,0,0.07);transition:all 0.3s;border-top:4px solid transparent;}
+.scard:hover{transform:translateY(-4px);box-shadow:0 8px 25px rgba(0,0,0,0.12);}
+.scard:nth-child(1){border-top-color:var(--pink);}
+.scard:nth-child(2){border-top-color:var(--orange);}
+.scard:nth-child(3){border-top-color:var(--purple);}
+.scard:nth-child(4){border-top-color:var(--green);}
+.scard .ic{font-size:34px;margin-bottom:8px;}
+.scard .num{font-family:'Baloo 2',cursive;font-size:2rem;font-weight:800;color:var(--dark);}
+.scard .lbl{font-size:0.75rem;color:#999;text-transform:uppercase;letter-spacing:1px;margin-top:3px;}
+
+.sec{background:white;border-radius:20px;padding:28px;margin-bottom:26px;box-shadow:0 3px 15px rgba(0,0,0,0.06);}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:22px;padding-bottom:14px;border-bottom:2px solid #f5f5f5;}
+.sec-head h3{font-family:'Baloo 2',cursive;font-size:1.35rem;color:var(--dark);}
+
+.pwd-section{background:linear-gradient(135deg,#fff5f8,#fff9f0);border:2px solid #ffe0e8;border-radius:16px;padding:22px;margin-bottom:26px;}
+.pwd-section h4{font-family:'Baloo 2',cursive;font-size:1.1rem;color:var(--pink);margin-bottom:16px;}
+.pwd-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:14px;align-items:end;}
+.fg{display:flex;flex-direction:column;gap:7px;}
+.fg label{font-weight:700;font-size:0.82rem;color:var(--text);}
+.fg input,.fg textarea,.fg select{border:2px solid #eee;border-radius:12px;padding:11px 14px;font-size:0.9rem;font-family:'Poppins',sans-serif;outline:none;transition:all 0.3s;}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,107,157,0.1);}
+.btn-pwd{background:linear-gradient(135deg,var(--purple),var(--pink));color:white;border:none;padding:12px 20px;border-radius:12px;cursor:pointer;font-weight:700;font-family:'Poppins',sans-serif;font-size:0.85rem;white-space:nowrap;}
+
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.fg.full{grid-column:1/-1;}
+.upload-zone{border:3px dashed #ddd;border-radius:14px;padding:26px;text-align:center;cursor:pointer;background:#fafafe;transition:all 0.3s;position:relative;}
+.upload-zone:hover{border-color:var(--pink);background:#fff5f8;}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;border:none;}
+.img-prev{width:100px;height:100px;object-fit:cover;border-radius:12px;border:3px solid var(--pink);display:none;margin:10px auto 0;}
+.btn-add{background:linear-gradient(135deg,var(--pink),var(--orange));color:white;border:none;padding:13px 28px;border-radius:12px;font-size:0.95rem;font-weight:700;cursor:pointer;margin-top:8px;font-family:'Poppins',sans-serif;transition:all 0.3s;letter-spacing:1px;}
+.btn-add:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,107,157,0.4);}
+
+.search-row{margin-bottom:16px;}
+.search-row input{width:100%;padding:12px 18px;border:2px solid #eee;border-radius:30px;font-size:0.9rem;outline:none;font-family:'Poppins',sans-serif;transition:border-color 0.3s;}
+.search-row input:focus{border-color:var(--pink);}
+
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{background:linear-gradient(135deg,var(--dark),#2d2d44);color:white;padding:13px 16px;text-align:left;font-size:0.8rem;letter-spacing:1px;text-transform:uppercase;}
+td{padding:13px 16px;border-bottom:1px solid #f5f5f5;vertical-align:middle;}
+tr:hover td{background:#fafafe;}
+.thumb{width:54px;height:54px;border-radius:10px;background:#f5f5ff;display:flex;align-items:center;justify-content:center;font-size:24px;overflow:hidden;border:2px solid #eee;}
+.thumb img{width:100%;height:100%;object-fit:cover;}
+.cat-pill{background:linear-gradient(135deg,#f0f4ff,#e8f0fe);color:var(--purple);padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:700;}
+.price-green{font-weight:800;color:var(--green);font-family:'Baloo 2',cursive;font-size:1rem;}
+.new-pill{background:var(--pink);color:white;padding:2px 8px;border-radius:8px;font-size:0.65rem;margin-left:5px;}
+.btn-edit{background:#e8f0fe;color:var(--blue);border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.78rem;font-family:'Poppins',sans-serif;transition:all 0.3s;}
+.btn-edit:hover{background:var(--blue);color:white;}
+.btn-del{background:#ffebee;color:var(--red);border:none;padding:7px 12px;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.78rem;margin-left:6px;font-family:'Poppins',sans-serif;transition:all 0.3s;}
+.btn-del:hover{background:var(--red);color:white;}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:900;display:none;align-items:center;justify-content:center;padding:16px;}
+.overlay.on{display:flex;}
+.modal{background:white;border-radius:24px;width:100%;max-width:540px;max-height:88vh;overflow-y:auto;padding:28px;}
+.mhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid #f5f5f5;}
+.mhead h3{font-family:'Baloo 2',cursive;font-size:1.3rem;}
+.xbtn{background:#f0f0f0;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1rem;}
+.btn-save{width:100%;background:linear-gradient(135deg,var(--green),#1ea060);color:white;border:none;padding:14px;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;margin-top:12px;font-family:'Poppins',sans-serif;transition:all 0.3s;}
+.btn-save:hover{transform:translateY(-2px);}
+
+.toast{position:fixed;bottom:24px;right:16px;padding:13px 22px;border-radius:14px;font-weight:700;z-index:9999;transform:translateY(120px);opacity:0;transition:all 0.4s;color:white;box-shadow:0 6px 25px rgba(0,0,0,0.2);max-width:90vw;font-family:'Poppins',sans-serif;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+@media(max-width:768px){
+  .hd{flex-direction:column;gap:10px;text-align:center;}
+  .fgrid{grid-template-columns:1fr;}
+  .fg.full{grid-column:1;}
+  .main{padding:16px 10px;}
+  .stats{grid-template-columns:1fr 1fr;}
+  .pwd-grid{grid-template-columns:1fr;}
+  .login-card{padding:36px 24px;}
+}
+</style>
+</head>
+<body>
+
+<div class="login-page" id="loginPage">
+  <div class="login-card">
+    <div class="lc-icon">👑</div>
+    <h2>Owner Panel</h2>
+    <p class="sub">Sangeeta &amp; Sons Equipments<br>Sirf authorized owner ke liye</p>
+    <div class="pwd-wrap">
+      <input type="password" id="pwdIn" placeholder="Password daalen..." onkeydown="if(event.key==='Enter')login()">
+      <button class="eye-btn" onclick="toggleEye()">👁</button>
+    </div>
+    <button class="login-btn" onclick="login()">🔐 Login Karein</button>
+    <p class="login-err" id="loginErr">❌ Galat password! Dobara try karein.</p>
+    <p class="pwd-hint">Default password: <strong>sangeeta2024</strong></p>
+  </div>
+</div>
+
+<div class="panel" id="panel">
+  <header>
+    <div class="hd">
+      <div class="logo">
+        <div class="logo-ic">👑</div>
+        <div class="logo-tx">
+          <h1>Sangeeta &amp; Sons — Owner Panel</h1>
+          <p>🔒 Admin Access Only</p>
+        </div>
+      </div>
+      <button class="logout" onclick="logout()">🚪 Logout</button>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="stats">
+      <div class="scard"><div class="ic">📦</div><div class="num" id="sTotal">0</div><div class="lbl">Total Products</div></div>
+      <div class="scard"><div class="ic">🆕</div><div class="num" id="sNew">0</div><div class="lbl">New Products</div></div>
+      <div class="scard"><div class="ic">🏷️</div><div class="num" id="sCat">0</div><div class="lbl">Categories</div></div>
+      <div class="scard"><div class="ic">💰</div><div class="num" id="sAvg">₹0</div><div class="lbl">Avg Price</div></div>
+    </div>
+
+    <div class="pwd-section">
+      <h4>🔑 Password Change Karein / Change Password</h4>
+      <div class="pwd-grid">
+        <div class="fg"><label>Purana Password</label><input type="password" id="oldPwd" placeholder="Current password"></div>
+        <div class="fg"><label>Naya Password</label><input type="password" id="newPwd" placeholder="New password (min 6)"></div>
+        <button class="btn-pwd" onclick="changePwd()">🔒 Update</button>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h3>➕ Naya Product Add Karein</h3></div>
+      <div class="fgrid">
+        <div class="fg"><label>Product Naam *</label><input type="text" id="pName" placeholder="Glass Cake Counter 4 Feet"></div>
+        <div class="fg"><label>Category *</label>
+          <select id="pCat">
+            <option value="Cake Counter">🎂 Cake Counter</option>
+            <option value="Refrigeration">❄️ Refrigeration</option>
+            <option value="Display Case">🔲 Display Case</option>
+            <option value="Bakery Equipment">🔧 Bakery Equipment</option>
+            <option value="Accessories">🛠 Accessories</option>
+          </select>
+        </div>
+        <div class="fg"><label>Price (₹) *</label><input type="number" id="pPrice" placeholder="25000"></div>
+        <div class="fg"><label>MRP (₹)</label><input type="number" id="pMrp" placeholder="30000"></div>
+        <div class="fg full"><label>Description / Jankari</label><textarea id="pDesc" rows="3" placeholder="Product ke baare mein likhein..."></textarea></div>
+        <div class="fg full">
+          <label>Product Image Upload Karein</label>
+          <div class="upload-zone" onclick="document.getElementById('pImg').click()">
+            <input type="file" id="pImg" accept="image/*" onchange="prevImg(event,'pPrev','pLbl')">
+            <div id="pLbl"><div style="font-size:36px;margin-bottom:8px">📷</div><p style="color:var(--pink);font-weight:700">Image Upload Karein</p><p style="color:#bbb;font-size:0.8rem">Click ya drag &amp; drop</p></div>
+            <img id="pPrev" class="img-prev" alt="Preview">
+          </div>
+        </div>
+      </div>
+      <button class="btn-add" onclick="addProduct()">✅ Product Add Karein</button>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><h3>📋 Saare Products</h3></div>
+      <div class="search-row"><input type="text" id="srch" placeholder="🔍 Product search karein..." oninput="renderTable()"></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Image</th><th>Product</th><th>Category</th><th>Price</th><th>MRP</th><th>Action</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="editModal">
+  <div class="modal">
+    <div class="mhead"><h3>✏️ Product Edit Karein</h3><button class="xbtn" onclick="closeEdit()">✕</button></div>
+    <div class="fgrid">
+      <div class="fg full"><label>Naam *</label><input type="text" id="eName"></div>
+      <div class="fg"><label>Category</label>
+        <select id="eCat">
+          <option value="Cake Counter">🎂 Cake Counter</option>
+          <option value="Refrigeration">❄️ Refrigeration</option>
+          <option value="Display Case">🔲 Display Case</option>
+          <option value="Bakery Equipment">🔧 Bakery Equipment</option>
+          <option value="Accessories">🛠 Accessories</option>
+        </select>
+      </div>
+      <div class="fg"><label>Price (₹)</label><input type="number" id="ePrice"></div>
+      <div class="fg"><label>MRP (₹)</label><input type="number" id="eMrp"></div>
+      <div class="fg full"><label>Description</label><textarea id="eDesc" rows="3"></textarea></div>
+      <div class="fg full">
+        <label>Nayi Image (optional)</label>
+        <div class="upload-zone" onclick="document.getElementById('eImg').click()">
+          <input type="file" id="eImg" accept="image/*" onchange="prevImg(event,'ePrev','eLbl')">
+          <div id="eLbl"><div style="font-size:28px">📷</div><p style="color:var(--pink);font-weight:700;font-size:0.85rem">Nayi Image Chunein</p></div>
+          <img id="ePrev" class="img-prev" alt="">
+        </div>
+      </div>
+    </div>
+    <button class="btn-save" onclick="saveEdit()">💾 Save Karein</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY='sne_v2_products';
+const PWD_KEY='sne_owner_pwd';
+let products=[];
+let editId=null;
+
+function getPassword(){return localStorage.getItem(PWD_KEY)||'sangeeta2024';}
+
+function login(){
+  const pwd=document.getElementById('pwdIn').value;
+  if(pwd===getPassword()){
+    document.getElementById('loginPage').style.display='none';
+    document.getElementById('panel').classList.add('on');
+    loadProducts();renderTable();updateStats();
+  }else{
+    document.getElementById('loginErr').style.display='block';
+    document.getElementById('pwdIn').value='';
+    document.getElementById('pwdIn').focus();
+  }
+}
+function toggleEye(){const i=document.getElementById('pwdIn');i.type=i.type==='password'?'text':'password';}
+function logout(){
+  document.getElementById('loginPage').style.display='flex';
+  document.getElementById('panel').classList.remove('on');
+  document.getElementById('pwdIn').value='';
+  document.getElementById('loginErr').style.display='none';
+}
+function changePwd(){
+  const old=document.getElementById('oldPwd').value;
+  const nw=document.getElementById('newPwd').value;
+  if(old!==getPassword()){toast('❌ Purana password galat hai!','#e74c3c');return;}
+  if(nw.length<6){toast('❌ Naya password kam se kam 6 characters!','#e74c3c');return;}
+  localStorage.setItem(PWD_KEY,nw);
+  document.getElementById('oldPwd').value='';
+  document.getElementById('newPwd').value='';
+  toast('✅ Password change ho gaya!');
+}
+function loadProducts(){
+  const s=localStorage.getItem(STORAGE_KEY);
+  if(s){products=JSON.parse(s);}
+  else{
+    products=[
+      {id:1,name:"Glass Cake Display Counter 4 Feet",category:"Cake Counter",price:22000,mrp:28000,desc:"4 feet ki glass display counter with LED lights.",image:null,emoji:"🧊",isNew:true},
+      {id:2,name:"Refrigerated Cake Counter 6 Feet",category:"Refrigeration",price:45000,mrp:55000,desc:"High capacity refrigerated counter. Energy saving.",image:null,emoji:"❄️",isNew:false},
+      {id:3,name:"Curved Glass Pastry Cabinet",category:"Display Case",price:18500,mrp:22000,desc:"Premium curved glass with humidity control.",image:null,emoji:"🎁",isNew:true},
+      {id:4,name:"Commercial Bread Slicer",category:"Bakery Equipment",price:12000,mrp:15000,desc:"Industrial grade slicer with SS blades.",image:null,emoji:"🔧",isNew:false}
+    ];
+    save();
+  }
+}
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(products));}
+function updateStats(){
+  document.getElementById('sTotal').textContent=products.length;
+  document.getElementById('sNew').textContent=products.filter(p=>p.isNew).length;
+  document.getElementById('sCat').textContent=[...new Set(products.map(p=>p.category))].length;
+  const avg=products.length?Math.round(products.reduce((s,p)=>s+p.price,0)/products.length):0;
+  document.getElementById('sAvg').textContent='₹'+avg.toLocaleString('en-IN');
+}
+function renderTable(){
+  const q=(document.getElementById('srch').value||'').toLowerCase();
+  const list=q?products.filter(p=>p.name.toLowerCase().includes(q)||p.category.toLowerCase().includes(q)):products;
+  const tb=document.getElementById('tbody');
+  if(!list.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:30px;color:#aaa">Koi product nahi mila.</td></tr>';return;}
+  tb.innerHTML=list.map(p=>`
+    <tr>
+      <td><div class="thumb">${p.image?`<img src="${p.image}" alt="">`:p.emoji}</div></td>
+      <td><strong>${p.name}</strong>${p.isNew?'<span class="new-pill">NEW</span>':''}</td>
+      <td><span class="cat-pill">${p.category}</span></td>
+      <td class="price-green">₹${p.price.toLocaleString('en-IN')}</td>
+      <td style="color:#bbb;text-decoration:line-through">${p.mrp?'₹'+p.mrp.toLocaleString('en-IN'):'—'}</td>
+      <td><button class="btn-edit" onclick="openEdit(${p.id})">✏️ Edit</button><button class="btn-del" onclick="delProduct(${p.id})">🗑 Delete</button></td>
+    </tr>`).join('');
+}
+function prevImg(e,prevId,lblId){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=function(ev){
+    const img=document.getElementById(prevId);
+    img.src=ev.target.result;img.style.display='block';
+    document.getElementById(lblId).style.display='none';
+  };
+  r.readAsDataURL(file);
+}
+function addProduct(){
+  const name=document.getElementById('pName').value.trim();
+  const price=document.getElementById('pPrice').value;
+  const mrp=document.getElementById('pMrp').value;
+  const cat=document.getElementById('pCat').value;
+  const desc=document.getElementById('pDesc').value.trim();
+  const prev=document.getElementById('pPrev');
+  if(!name||!price){toast('❌ Naam aur Price zaroori hai!','#e74c3c');return;}
+  const emojis={'Cake Counter':'🎂','Refrigeration':'❄️','Display Case':'🎁','Bakery Equipment':'🔧','Accessories':'🛠'};
+  products.unshift({id:Date.now(),name,category:cat,price:parseInt(price),mrp:mrp?parseInt(mrp):null,desc:desc||'Premium quality product',image:prev.style.display!=='none'?prev.src:null,emoji:emojis[cat]||'📦',isNew:true});
+  save();renderTable();updateStats();
+  document.getElementById('pName').value='';document.getElementById('pPrice').value='';
+  document.getElementById('pMrp').value='';document.getElementById('pDesc').value='';
+  document.getElementById('pImg').value='';prev.style.display='none';
+  document.getElementById('pLbl').style.display='block';
+  toast('✅ Product add ho gaya!');
+}
+function delProduct(id){
+  if(confirm('Kya aap is product ko delete karna chahte hain?')){
+    products=products.filter(p=>p.id!==id);save();renderTable();updateStats();
+    toast('🗑 Product delete ho gaya!','#e74c3c');
+  }
+}
+function openEdit(id){
+  const p=products.find(x=>x.id===id);if(!p)return;
+  editId=id;
+  document.getElementById('eName').value=p.name;
+  document.getElementById('eCat').value=p.category;
+  document.getElementById('ePrice').value=p.price;
+  document.getElementById('eMrp').value=p.mrp||'';
+  document.getElementById('eDesc').value=p.desc;
+  document.getElementById('ePrev').style.display='none';
+  document.getElementById('eLbl').style.display='block';
+  document.getElementById('eImg').value='';
+  document.getElementById('editModal').classList.add('on');
+}
+function closeEdit(){document.getElementById('editModal').classList.remove('on');editId=null;}
+function saveEdit(){
+  const p=products.find(x=>x.id===editId);if(!p)return;
+  p.name=document.getElementById('eName').value.trim();
+  p.category=document.getElementById('eCat').value;
+  p.price=parseInt(document.getElementById('ePrice').value);
+  p.mrp=document.getElementById('eMrp').value?parseInt(document.getElementById('eMrp').value):null;
+  p.desc=document.getElementById('eDesc').value.trim();
+  const ep=document.getElementById('ePrev');
+  if(ep.style.display!=='none')p.image=ep.src;
+  save();renderTable();updateStats();closeEdit();
+  toast('✅ Product update ho gaya!');
+}
+function toast(msg,bg='linear-gradient(135deg,#26de81,#1ea060)'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.background=bg;
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('loginPage').style.display!=='none')login();});
+</script>
+</body>
+</html>
