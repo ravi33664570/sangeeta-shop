@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Owner Panel | Sangeeta & Sons Equipments</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Mukta:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#c9a227;--gold-light:#e8c547;--gold-dark:#9a7a10;--maroon:#7b1c2e;--maroon-dark:#4a0f1a;--maroon-light:#a52840;--dark:#0d0608;--dark2:#1a0c10;--dark3:#261218;--cream:#fdf6e3;--green:#27ae60;--red:#c0392b;--blue:#2980b9;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Mukta',sans-serif;background:#0f1117;color:var(--cream);overflow-x:hidden;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--dark2);}::-webkit-scrollbar-thumb{background:var(--gold-dark);border-radius:3px;}
+@keyframes glow{0%,100%{text-shadow:0 0 20px rgba(201,162,39,0.3)}50%{text-shadow:0 0 50px rgba(201,162,39,0.9)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* LOGIN */
+.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--dark) 0%,var(--dark2) 50%,var(--maroon-dark) 100%);position:relative;overflow:hidden;padding:20px;}
+.lbg{position:absolute;inset:0;opacity:0.03;background-image:repeating-linear-gradient(45deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%);background-size:20px 20px;}
+.lcard{background:linear-gradient(145deg,var(--dark2),var(--dark3));border:1px solid rgba(201,162,39,0.25);border-radius:4px;padding:48px 40px;width:92%;max-width:440px;text-align:center;box-shadow:0 25px 80px rgba(0,0,0,0.6);position:relative;z-index:1;}
+.lcard::before{content:'';position:absolute;inset:0;border-radius:4px;background:linear-gradient(135deg,rgba(201,162,39,0.05),transparent);pointer-events:none;}
+.l-em{font-size:3.5rem;margin-bottom:16px;animation:float 3s infinite;}
+.l-div{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:14px;}
+.l-div span{height:1px;width:50px;background:linear-gradient(90deg,transparent,var(--gold-dark),transparent);}
+.l-div i{color:var(--gold-dark);font-size:0.65rem;letter-spacing:3px;font-family:'Cinzel',serif;}
+.lcard h2{font-family:'Cinzel',serif;font-size:1.6rem;color:var(--gold-light);letter-spacing:2px;margin-bottom:4px;}
+.lcard .sub{font-family:'Crimson Text',serif;color:rgba(253,246,227,0.4);font-style:italic;margin-bottom:30px;font-size:0.9rem;}
+.lg{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;text-align:left;}
+.lg label{font-size:0.7rem;color:rgba(253,246,227,0.45);letter-spacing:2px;text-transform:uppercase;font-family:'Cinzel',serif;}
+.lg input{background:rgba(255,255,255,0.04);border:1px solid rgba(201,162,39,0.2);color:var(--cream);border-radius:3px;padding:13px 16px;font-family:'Mukta',sans-serif;font-size:0.9rem;outline:none;transition:all 0.3s;width:100%;}
+.lg input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,0.08);}
+.btn-login{width:100%;background:linear-gradient(135deg,var(--maroon-dark),var(--maroon));color:var(--gold-light);border:1px solid var(--gold-dark);padding:14px;border-radius:3px;font-family:'Cinzel',serif;font-size:0.82rem;letter-spacing:2px;cursor:pointer;margin-top:8px;transition:all 0.3s;font-weight:700;}
+.btn-login:hover{background:linear-gradient(135deg,var(--maroon),var(--maroon-light));box-shadow:0 6px 20px rgba(123,28,46,0.5);}
+.lerr{color:var(--red);font-size:0.8rem;margin-top:10px;display:none;font-family:'Cinzel',serif;letter-spacing:1px;}
+.lhint{margin-top:20px;color:rgba(253,246,227,0.2);font-size:0.72rem;font-family:'Cinzel',serif;letter-spacing:1px;}
+.lhint strong{color:rgba(201,162,39,0.5);}
+
+/* PANEL */
+.panel{display:none;}
+.panel.on{display:block;}
+
+header{background:linear-gradient(180deg,rgba(13,6,8,0.98),rgba(26,12,16,0.95));border-bottom:1px solid rgba(201,162,39,0.2);position:sticky;top:0;z-index:100;backdrop-filter:blur(10px);}
+.hi{max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:13px 26px;}
+.logo{display:flex;align-items:center;gap:13px;}
+.l-em2{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dark),var(--gold));display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 15px rgba(201,162,39,0.35);}
+.l-tx h1{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold-light);letter-spacing:1px;}
+.l-tx p{font-size:0.62rem;color:var(--maroon-light);letter-spacing:3px;text-transform:uppercase;font-weight:700;}
+.btn-logout{background:linear-gradient(135deg,var(--red),#8b0000);color:white;border:none;padding:9px 18px;border-radius:3px;cursor:pointer;font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:1px;transition:all 0.3s;}
+.btn-logout:hover{box-shadow:0 4px 15px rgba(192,57,43,0.5);}
+
+.main{max-width:1300px;margin:0 auto;padding:26px 20px;}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:28px;}
+.sc{background:linear-gradient(145deg,var(--dark2),var(--dark3));border:1px solid rgba(201,162,39,0.1);border-radius:3px;padding:20px;text-align:center;transition:all 0.3s;border-top:3px solid transparent;}
+.sc:hover{transform:translateY(-4px);border-color:rgba(201,162,39,0.2);}
+.sc:nth-child(1){border-top-color:var(--gold);}
+.sc:nth-child(2){border-top-color:var(--maroon-light);}
+.sc:nth-child(3){border-top-color:var(--blue);}
+.sc:nth-child(4){border-top-color:var(--green);}
+.sc .si{font-size:32px;margin-bottom:7px;}
+.sc .sn{font-family:'Cinzel',serif;font-size:1.9rem;color:var(--gold-light);font-weight:700;}
+.sc .sl{font-size:0.68rem;color:rgba(253,246,227,0.35);text-transform:uppercase;letter-spacing:2px;margin-top:3px;}
+
+/* SECTION */
+.sec{background:linear-gradient(145deg,var(--dark2),var(--dark3));border:1px solid rgba(201,162,39,0.1);border-radius:3px;padding:26px;margin-bottom:22px;}
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid rgba(201,162,39,0.08);}
+.sh h3{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--gold-light);letter-spacing:1px;}
+
+/* SETTINGS */
+.set-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.sg{display:flex;flex-direction:column;gap:6px;}
+.sg.full{grid-column:1/-1;}
+.sg label{font-size:0.7rem;color:rgba(253,246,227,0.4);letter-spacing:2px;text-transform:uppercase;font-family:'Cinzel',serif;}
+.sg input,.sg select{background:rgba(255,255,255,0.03);border:1px solid rgba(201,162,39,0.15);color:var(--cream);border-radius:3px;padding:10px 13px;font-family:'Mukta',sans-serif;font-size:0.88rem;outline:none;transition:all 0.3s;}
+.sg input:focus{border-color:var(--gold);}
+.btn-set{background:linear-gradient(135deg,var(--maroon-dark),var(--maroon));color:var(--gold-light);border:1px solid var(--gold-dark);padding:11px 24px;border-radius:3px;cursor:pointer;font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:1px;transition:all 0.3s;margin-top:6px;}
+.btn-set:hover{background:linear-gradient(135deg,var(--maroon),var(--maroon-light));}
+
+/* FORM */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:15px;}
+.f{display:flex;flex-direction:column;gap:6px;}
+.f.full{grid-column:1/-1;}
+.f label{font-size:0.7rem;color:rgba(253,246,227,0.4);letter-spacing:2px;text-transform:uppercase;font-family:'Cinzel',serif;}
+.f input,.f textarea,.f select{background:rgba(255,255,255,0.03);border:1px solid rgba(201,162,39,0.15);color:var(--cream);border-radius:3px;padding:10px 13px;font-family:'Mukta',sans-serif;font-size:0.88rem;outline:none;transition:all 0.3s;}
+.f input:focus,.f textarea:focus{border-color:var(--gold);background:rgba(201,162,39,0.04);}
+.f select option{background:var(--dark2);}
+.uz{border:2px dashed rgba(201,162,39,0.2);border-radius:3px;padding:24px;text-align:center;cursor:pointer;background:rgba(255,255,255,0.01);transition:all 0.3s;position:relative;}
+.uz:hover{border-color:rgba(201,162,39,0.4);background:rgba(201,162,39,0.03);}
+.uz input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;border:none;}
+.ip{width:95px;height:95px;object-fit:cover;border-radius:3px;border:2px solid var(--gold-dark);display:none;margin:9px auto 0;}
+.btn-add{background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:var(--dark);border:none;padding:12px 26px;border-radius:3px;font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:1px;cursor:pointer;margin-top:8px;transition:all 0.3s;font-weight:700;}
+.btn-add:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(201,162,39,0.28);}
+
+/* SEARCH */
+.sr{margin-bottom:14px;}
+.sr input{width:100%;padding:11px 16px;background:rgba(255,255,255,0.03);border:1px solid rgba(201,162,39,0.15);color:var(--cream);border-radius:3px;font-size:0.88rem;outline:none;font-family:'Mukta',sans-serif;transition:all 0.3s;}
+.sr input:focus{border-color:var(--gold);}
+.sr input::placeholder{color:rgba(253,246,227,0.25);}
+
+/* TABLE */
+.tw{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{background:linear-gradient(135deg,var(--maroon-dark),var(--maroon));color:var(--gold-light);padding:12px 14px;text-align:left;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;font-family:'Cinzel',serif;}
+td{padding:12px 14px;border-bottom:1px solid rgba(201,162,39,0.05);vertical-align:middle;font-size:0.85rem;}
+tr:hover td{background:rgba(201,162,39,0.03);}
+.th{width:52px;height:52px;border-radius:3px;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;border:1px solid rgba(201,162,39,0.1);}
+.th img{width:100%;height:100%;object-fit:cover;}
+.cp{background:rgba(123,28,46,0.2);color:var(--maroon-light);border:1px solid rgba(123,28,46,0.3);padding:3px 11px;border-radius:2px;font-size:0.65rem;font-family:'Cinzel',serif;letter-spacing:1px;}
+.pg{font-family:'Cinzel',serif;font-size:0.95rem;color:var(--gold-light);font-weight:700;}
+.np{background:linear-gradient(135deg,var(--maroon-dark),var(--maroon));color:var(--gold-light);padding:2px 8px;border-radius:2px;font-size:0.62rem;margin-left:5px;font-family:'Cinzel',serif;}
+.be{background:rgba(41,128,185,0.15);color:#5dade2;border:1px solid rgba(41,128,185,0.2);padding:6px 12px;border-radius:3px;cursor:pointer;font-size:0.72rem;font-weight:700;font-family:'Cinzel',serif;transition:all 0.3s;}
+.be:hover{background:rgba(41,128,185,0.3);}
+.bd{background:rgba(192,57,43,0.1);color:#e74c3c;border:1px solid rgba(192,57,43,0.2);padding:6px 11px;border-radius:3px;cursor:pointer;font-size:0.72rem;font-weight:700;margin-left:5px;font-family:'Cinzel',serif;transition:all 0.3s;}
+.bd:hover{background:rgba(192,57,43,0.25);}
+
+/* EDIT MODAL */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:900;display:none;align-items:center;justify-content:center;padding:14px;}
+.ov.on{display:flex;}
+.mo{background:linear-gradient(145deg,var(--dark2),var(--dark3));border:1px solid rgba(201,162,39,0.2);border-radius:3px;width:100%;max-width:540px;max-height:88vh;overflow-y:auto;padding:28px;}
+.moh{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid rgba(201,162,39,0.1);}
+.moh h3{font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold-light);letter-spacing:1px;}
+.xb{background:rgba(201,162,39,0.08);border:1px solid rgba(201,162,39,0.15);color:var(--gold-light);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:0.9rem;}
+.btn-sv{width:100%;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:var(--dark);border:none;padding:13px;border-radius:3px;font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:1px;cursor:pointer;margin-top:12px;transition:all 0.3s;font-weight:700;}
+.btn-sv:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(201,162,39,0.28);}
+
+.toast{position:fixed;bottom:24px;right:16px;padding:12px 20px;border-radius:3px;font-weight:700;z-index:9999;transform:translateY(120px);opacity:0;transition:all 0.4s;font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:1px;max-width:90vw;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+@media(max-width:768px){
+  .hi{flex-direction:column;gap:10px;text-align:center;padding:13px 14px;}
+  .fg,.set-grid{grid-template-columns:1fr;}
+  .f.full,.sg.full{grid-column:1;}
+  .main{padding:16px 10px;}
+  .stats{grid-template-columns:1fr 1fr;}
+  .lcard{padding:36px 22px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-page" id="lp">
+  <div class="lbg"></div>
+  <div class="lcard">
+    <div class="l-em">👑</div>
+    <div class="l-div"><span></span><i>Authorized Access Only</i><span></span></div>
+    <h2>Owner Panel</h2>
+    <p class="sub">Sangeeta & Sons Equipments</p>
+    <div class="lg"><label>Business Name</label><input type="text" id="bn" placeholder="Business ka naam daalen..."></div>
+    <div class="lg"><label>Password</label><input type="password" id="pw" placeholder="Password daalen..." onkeydown="if(event.key==='Enter')login()"></div>
+    <button class="btn-login" onclick="login()">✦ Login Karein / Enter Panel</button>
+    <p class="lerr" id="lerr">❌ Galat credentials! Dobara try karein.</p>
+    <p class="lhint">Business: <strong>Sangeeta and Sons</strong> | Password: <strong>sangeeta2024</strong></p>
+  </div>
+</div>
+
+<!-- PANEL -->
+<div class="panel" id="panel">
+  <header>
+    <div class="hi">
+      <div class="logo">
+        <div class="l-em2">👑</div>
+        <div class="l-tx"><h1>Sangeeta & Sons — Owner Panel</h1><p>🔒 Admin Access Only</p></div>
+      </div>
+      <button class="btn-logout" onclick="logout()">🚪 Logout</button>
+    </div>
+  </header>
+
+  <div class="main">
+    <!-- STATS -->
+    <div class="stats">
+      <div class="sc"><div class="si">📦</div><div class="sn" id="st">0</div><div class="sl">Total Products</div></div>
+      <div class="sc"><div class="si">🆕</div><div class="sn" id="sn">0</div><div class="sl">New Products</div></div>
+      <div class="sc"><div class="si">🏷️</div><div class="sn" id="sc2">0</div><div class="sl">Categories</div></div>
+      <div class="sc"><div class="si">💰</div><div class="sn" id="sa">₹0</div><div class="sl">Avg Price</div></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="sec">
+      <div class="sh"><h3>⚙️ Settings — Login Credentials Change Karein</h3></div>
+      <div class="set-grid">
+        <div class="sg"><label>Naya Business Name</label><input type="text" id="nbn" placeholder="New business name..."></div>
+        <div class="sg"><label>Purana Password</label><input type="password" id="op" placeholder="Current password..."></div>
+        <div class="sg"><label>Naya Password</label><input type="password" id="np" placeholder="New password (min 6)..."></div>
+        <div class="sg"><label>&nbsp;</label><button class="btn-set" onclick="updateCreds()">🔒 Credentials Update Karein</button></div>
+      </div>
+    </div>
+
+    <!-- ADD PRODUCT -->
+    <div class="sec">
+      <div class="sh"><h3>➕ Naya Product Add Karein</h3></div>
+      <div class="fg">
+        <div class="f"><label>Product Naam *</label><input type="text" id="pn" placeholder="Glass Cake Counter 4 Feet..."></div>
+        <div class="f"><label>Category *</label>
+          <select id="pc">
+            <option value="Cake Counter">🎂 Cake Counter</option>
+            <option value="Cold Display Counter">❄️ Cold Display Counter</option>
+            <option value="Refrigerated Counter">🧊 Refrigerated Counter</option>
+            <option value="Glass Display Case">🔲 Glass Display Case</option>
+            <option value="Bakery Equipment">🔧 Bakery Equipment</option>
+            <option value="Cash Counter">💰 Cash Counter</option>
+            <option value="Accessories & Parts">🛠 Accessories & Parts</option>
+          </select>
+        </div>
+        <div class="f"><label>Price (₹) *</label><input type="number" id="pp" placeholder="25000"></div>
+        <div class="f"><label>MRP (₹)</label><input type="number" id="pm" placeholder="30000"></div>
+        <div class="f full"><label>Description / Jankari</label><textarea id="pd" rows="3" placeholder="Product ke baare mein likhein..."></textarea></div>
+        <div class="f full">
+          <label>Product Image Upload Karein</label>
+          <div class="uz" onclick="document.getElementById('pi').click()">
+            <input type="file" id="pi" accept="image/*" onchange="prev(event,'piv','pl')">
+            <div id="pl"><div style="font-size:34px;margin-bottom:7px">📷</div><p style="color:var(--gold);font-family:Cinzel,serif;font-size:0.78rem;letter-spacing:1px">Image Upload Karein</p><p style="color:rgba(253,246,227,0.3);font-size:0.75rem;margin-top:4px">Click ya drag & drop</p></div>
+            <img id="piv" class="ip" alt="Preview">
+          </div>
+        </div>
+      </div>
+      <button class="btn-add" onclick="addP()">✦ Product Add Karein</button>
+    </div>
+
+    <!-- PRODUCTS LIST -->
+    <div class="sec">
+      <div class="sh"><h3>📋 Saare Products / All Products</h3></div>
+      <div class="sr"><input type="text" id="si" placeholder="🔍 Product search karein..." oninput="renderT()"></div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Image</th><th>Product</th><th>Category</th><th>Price</th><th>MRP</th><th>Action</th></tr></thead>
+          <tbody id="tb"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="ov" id="em">
+  <div class="mo">
+    <div class="moh"><h3>✏️ Product Edit Karein</h3><button class="xb" onclick="closeE()">✕</button></div>
+    <div class="fg">
+      <div class="f full"><label>Naam *</label><input type="text" id="en"></div>
+      <div class="f"><label>Category</label>
+        <select id="ec">
+          <option value="Cake Counter">🎂 Cake Counter</option>
+          <option value="Cold Display Counter">❄️ Cold Display Counter</option>
+          <option value="Refrigerated Counter">🧊 Refrigerated Counter</option>
+          <option value="Glass Display Case">🔲 Glass Display Case</option>
+          <option value="Bakery Equipment">🔧 Bakery Equipment</option>
+          <option value="Cash Counter">💰 Cash Counter</option>
+          <option value="Accessories & Parts">🛠 Accessories & Parts</option>
+        </select>
+      </div>
+      <div class="f"><label>Price (₹)</label><input type="number" id="ep"></div>
+      <div class="f"><label>MRP (₹)</label><input type="number" id="em2"></div>
+      <div class="f full"><label>Description</label><textarea id="ed" rows="3"></textarea></div>
+      <div class="f full">
+        <label>Nayi Image (optional)</label>
+        <div class="uz" onclick="document.getElementById('ei').click()">
+          <input type="file" id="ei" accept="image/*" onchange="prev(event,'eiv','el')">
+          <div id="el"><div style="font-size:28px">📷</div><p style="color:var(--gold);font-family:Cinzel,serif;font-size:0.75rem;letter-spacing:1px">Nayi Image Chunein</p></div>
+          <img id="eiv" class="ip" alt="">
+        </div>
+      </div>
+    </div>
+    <button class="btn-sv" onclick="saveE()">💾 Save Karein</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SK='sne_v3_products',BNK='sne_bname',PWK='sne_pwd';
+let products=[],eid=null;
+
+function getBN(){return localStorage.getItem(BNK)||'sangeeta and sons';}
+function getPW(){return localStorage.getItem(PWK)||'sangeeta2024';}
+
+function login(){
+  const bn=document.getElementById('bn').value.trim().toLowerCase();
+  const pw=document.getElementById('pw').value;
+  if(bn===getBN().toLowerCase()&&pw===getPW()){
+    document.getElementById('lp').style.display='none';
+    document.getElementById('panel').classList.add('on');
+    loadP();renderT();updS();
+  }else{
+    document.getElementById('lerr').style.display='block';
+    document.getElementById('pw').value='';
+  }
+}
+
+function logout(){
+  document.getElementById('lp').style.display='flex';
+  document.getElementById('panel').classList.remove('on');
+  document.getElementById('pw').value='';document.getElementById('bn').value='';
+  document.getElementById('lerr').style.display='none';
+}
+
+function updateCreds(){
+  const nbn=document.getElementById('nbn').value.trim();
+  const op=document.getElementById('op').value;
+  const np=document.getElementById('np').value;
+  if(op!==getPW()){toast('❌ Purana password galat hai!','#c0392b','#fff');return;}
+  if(np.length<6){toast('❌ Naya password 6+ characters hona chahiye!','#c0392b','#fff');return;}
+  if(nbn) localStorage.setItem(BNK,nbn);
+  localStorage.setItem(PWK,np);
+  document.getElementById('nbn').value='';document.getElementById('op').value='';document.getElementById('np').value='';
+  toast('✦ Credentials update ho gaye!','#c9a227','#0d0608');
+}
+
+function loadP(){
+  const s=localStorage.getItem(SK);
+  if(s){products=JSON.parse(s);}
+  else{
+    products=[
+      {id:1,name:"Glass Cake Display Counter 4 Feet",category:"Cake Counter",price:22000,mrp:28000,desc:"4 feet ki glass display counter. LED lighting included.",image:null,emoji:"🧊",isNew:true},
+      {id:2,name:"Refrigerated Cake Counter 6 Feet",category:"Refrigerated Counter",price:45000,mrp:55000,desc:"High capacity refrigerated counter. -2°C to +8°C.",image:null,emoji:"❄️",isNew:false},
+      {id:3,name:"Cold Display Counter 5 Feet",category:"Cold Display Counter",price:32000,mrp:40000,desc:"Premium cold display for bakeries and sweet shops.",image:null,emoji:"🔵",isNew:true},
+      {id:4,name:"Glass Display Case Curved",category:"Glass Display Case",price:18500,mrp:22000,desc:"Premium curved glass with humidity control.",image:null,emoji:"🔲",isNew:false},
+      {id:5,name:"Commercial Cash Counter SS",category:"Cash Counter",price:15000,mrp:18000,desc:"Sturdy stainless steel cash counter.",image:null,emoji:"💰",isNew:true},
+      {id:6,name:"Commercial Bread Slicer",category:"Bakery Equipment",price:12000,mrp:15000,desc:"Industrial grade slicer with SS blades.",image:null,emoji:"🔧",isNew:false}
+    ];
+    save();
+  }
+}
+function save(){localStorage.setItem(SK,JSON.stringify(products));}
+function updS(){
+  document.getElementById('st').textContent=products.length;
+  document.getElementById('sn').textContent=products.filter(p=>p.isNew).length;
+  document.getElementById('sc2').textContent=[...new Set(products.map(p=>p.category))].length;
+  const avg=products.length?Math.round(products.reduce((s,p)=>s+p.price,0)/products.length):0;
+  document.getElementById('sa').textContent='₹'+avg.toLocaleString('en-IN');
+}
+function renderT(){
+  const q=(document.getElementById('si').value||'').toLowerCase();
+  const list=q?products.filter(p=>p.name.toLowerCase().includes(q)||p.category.toLowerCase().includes(q)):products;
+  const tb=document.getElementById('tb');
+  if(!list.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:28px;color:rgba(253,246,227,0.25);font-family:Cinzel,serif;letter-spacing:2px;font-size:0.78rem">No products found.</td></tr>';return;}
+  tb.innerHTML=list.map(p=>`<tr><td><div class="th">${p.image?`<img src="${p.image}" alt="">`:p.emoji}</div></td><td><strong style="font-family:Cinzel,serif;font-size:0.85rem">${p.name}</strong>${p.isNew?'<span class="np">NEW</span>':''}</td><td><span class="cp">${p.category}</span></td><td class="pg">₹${p.price.toLocaleString('en-IN')}</td><td style="color:rgba(253,246,227,0.3);text-decoration:line-through;font-size:0.8rem">${p.mrp?'₹'+p.mrp.toLocaleString('en-IN'):'—'}</td><td><button class="be" onclick="openE(${p.id})">✏️ Edit</button><button class="bd" onclick="delP(${p.id})">🗑 Del</button></td></tr>`).join('');
+}
+function prev(e,pid,lid){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{const img=document.getElementById(pid);img.src=ev.target.result;img.style.display='block';document.getElementById(lid).style.display='none';};
+  r.readAsDataURL(file);
+}
+function addP(){
+  const n=document.getElementById('pn').value.trim(),p=document.getElementById('pp').value,m=document.getElementById('pm').value,c=document.getElementById('pc').value,d=document.getElementById('pd').value.trim();
+  const pv=document.getElementById('piv');
+  if(!n||!p){toast('❌ Naam aur Price zaroori hai!','#c0392b','#fff');return;}
+  const em={'Cake Counter':'🎂','Cold Display Counter':'❄️','Refrigerated Counter':'🧊','Glass Display Case':'🔲','Bakery Equipment':'🔧','Cash Counter':'💰','Accessories & Parts':'🛠'};
+  products.unshift({id:Date.now(),name:n,category:c,price:parseInt(p),mrp:m?parseInt(m):null,desc:d||'Premium quality product',image:pv.style.display!=='none'?pv.src:null,emoji:em[c]||'📦',isNew:true});
+  save();renderT();updS();
+  ['pn','pp','pm','pd'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('pi').value='';pv.style.display='none';document.getElementById('pl').style.display='block';
+  toast('✦ Product add ho gaya!','#c9a227','#0d0608');
+}
+function delP(id){
+  if(confirm('Kya aap is product ko delete karna chahte hain?')){
+    products=products.filter(p=>p.id!==id);save();renderT();updS();
+    toast('🗑 Product delete ho gaya!','#c0392b','#fff');
+  }
+}
+function openE(id){
+  const p=products.find(x=>x.id===id);if(!p)return;eid=id;
+  document.getElementById('en').value=p.name;document.getElementById('ec').value=p.category;
+  document.getElementById('ep').value=p.price;document.getElementById('em2').value=p.mrp||'';
+  document.getElementById('ed').value=p.desc;
+  document.getElementById('eiv').style.display='none';document.getElementById('el').style.display='block';
+  document.getElementById('ei').value='';document.getElementById('em').classList.add('on');
+}
+function closeE(){document.getElementById('em').classList.remove('on');eid=null;}
+function saveE(){
+  const p=products.find(x=>x.id===eid);if(!p)return;
+  p.name=document.getElementById('en').value.trim();p.category=document.getElementById('ec').value;
+  p.price=parseInt(document.getElementById('ep').value);p.mrp=document.getElementById('em2').value?parseInt(document.getElementById('em2').value):null;
+  p.desc=document.getElementById('ed').value.trim();
+  const ev=document.getElementById('eiv');if(ev.style.display!=='none')p.image=ev.src;
+  save();renderT();updS();closeE();toast('✦ Product update ho gaya!','#c9a227','#0d0608');
+}
+function toast(msg,bg='#c9a227',tc='#0d0608'){const t=document.getElementById('toast');t.textContent=msg;t.style.background=bg;t.style.color=tc;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('lp').style.display!=='none')login();});
+</script>
+</body>
+</html>
