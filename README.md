@@ -1,0 +1,1 @@
+About sangeeta equipments sangeeta equipments ia a steel fabrication company based in pryagraj ,Up specialization in manufacturing high qualitycake counters ,display counters and customized commercial kitchen equipments
